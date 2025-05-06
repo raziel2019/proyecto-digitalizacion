@@ -1,11 +1,11 @@
 package botiga;
 
-public class Producte {
+public class ProducteTest {
     private String nom;
     private double preu;
     private int stock;
 
-    public Producte(String nom, double preu, int stock) {
+    public ProducteTest(String nom, double preu, int stock) {
         this.nom = nom;
         this.preu = preu;
         this.stock = stock;
