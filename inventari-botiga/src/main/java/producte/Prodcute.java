@@ -34,7 +34,8 @@ public class Prodcute {
 	public void setStock(String stock) {
 		this.stock = stock;
 	}
-	
+
+	@Override
 	public String toString() {
 		return String.format(getNombre(), getPrecio(), getStock());
 	}
