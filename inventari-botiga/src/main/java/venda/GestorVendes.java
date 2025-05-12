@@ -1,41 +1,42 @@
 package venda;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class GestorVendes {
-    private List<Venda> vendes;
+    private List<Venda> ventas;
 
     public GestorVendes() {
-        this.vendes = new ArrayList<>();
+        this.ventas = new ArrayList<>();
     }
 
-    public void registrarVenda(Venda venda) {
-        vendes.add(venda);
+    public void registrarVenta(Venda venta) {
+        ventas.add(venta);
     }
 
-    public List<Venda> getVendes() {
-        return vendes;
+    public List<Venda> getVentas() {
+        return ventas;
     }
 
-    public Map<String, Integer> resumPerProducte() {
-        Map<String, Integer> resum = new HashMap<>();
-        for (Venda venda : vendes) {
-            for (LiniaVenda linia : venda.getLinies()) {
-                String nom = linia.getProducte().getNom();
-                resum.put(nom, resum.getOrDefault(nom, 0) + linia.getQuantitat());
+    public Map<String, Integer> resumenPorProducto() {
+        Map<String, Integer> resumen = new HashMap<>();
+        for (Venda venta : ventas) {
+            for (LineaVenta linea : venta.getLineas()) {
+                String nombre = linea.getProducto().getNombre();
+                resumen.put(nombre, resumen.getOrDefault(nombre, 0) + linea.getCantidad());
             }
         }
-        return resum;
+        return resumen;
     }
 
-    public Map<String, Double> resumPerUsuari() {
-        Map<String, Double> resum = new HashMap<>();
-        for (Venda venda : vendes) {
-            String nom = venda.getUsuari() != null ? venda.getUsuari().getNom() : "Anònim";
-            resum.put(nom, resum.getOrDefault(nom, 0.0) + venda.getTotal());
+    public Map<String, Double> resumenPorUsuario() {
+        Map<String, Double> resumen = new HashMap<>();
+        for (Venda venta : ventas) {
+            String nombre = venta.getUsuario() != null ? venta.getUsuario().getNombre() : "Anónimo";
+            resumen.put(nombre, resumen.getOrDefault(nombre, 0.0) + venta.getTotal());
         }
-        return resum;
+        return resumen;
     }
 }
