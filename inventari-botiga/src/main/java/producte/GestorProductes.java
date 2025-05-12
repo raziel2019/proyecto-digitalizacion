@@ -1,34 +1,43 @@
-package producte;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import utilitats.InputHelper;
 
 public class GestorProductes {
-    private List<ProducteTest> productes = new ArrayList<>();
+    private final List<Producte> catalogo;
 
-    public void afegirProducte(ProducteTest p) {
-        productes.add(p);
+    public GestorProductes() {
+        this.catalogo = new ArrayList<>();
     }
 
-    public boolean eliminarProducte(String nom) {
-        return productes.removeIf(p -> p.getNom().equalsIgnoreCase(nom));
+    public void agregarProducto(Producte p) {
+        catalogo.add(p);
     }
 
-    public Optional<ProducteTest> cercarProducte(String nom) {
-        return productes.stream()
-                        .filter(p -> p.getNom().equalsIgnoreCase(nom))
-                        .findFirst();
+    public void agregarProductoDesdeInput() {
+        System.out.println("\n=== Agregar nuevo producto ===");
+        String nombre = InputHelper.readString();
+        double precio = InputHelper.readDecimal();
+        int stock = InputHelper.readPositiveInteger();
+        Producte producto = new Producte(nombre, precio, stock);
+        agregarProducto(producto);
+        System.out.println("Producto agregado.");
     }
 
-    public void aplicarDescompte(String nom, double percentatge) {
-        cercarProducte(nom).ifPresent(p -> {
-            double nouPreu = p.getPreu() * (1 - percentatge / 100);
-            p.setPreu(nouPreu);
-        });
+    public boolean eliminarProducto(String nombre) {
+        return catalogo.removeIf(p -> p.getNombre().equalsIgnoreCase(nombre));
     }
 
-    public void mostrarProductes() {
-        productes.forEach(System.out::println);
+    public Optional<Producte> buscarPorNombre(String nombre) {
+        return catalogo.stream()
+                .filter(p -> p.getNombre().equalsIgnoreCase(nombre))
+                .findFirst();
+    }
+
+    public void listarProductos() {
+        System.out.println("=== Catálogo de Productos ===");
+        for (Producte p : catalogo) {
+            System.out.println(p);
+        }
     }
 }
