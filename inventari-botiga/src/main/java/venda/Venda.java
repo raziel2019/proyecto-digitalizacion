@@ -1,46 +1,53 @@
 package venda;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import producte.Producte;
+import usuari.Usuari;
+import utilitats.InputHelper;
 
 public class Venda {
-    private LocalDateTime data;
-    private Usuari usuari;
-    private List<LiniaVenda> linies;
+    private LocalDateTime fecha;
+    private Usuari usuario;
+    private List<LineaVenta> lineas;
 
-    public Venda(Usuari usuari) {
-        this.data = LocalDateTime.now();
-        this.usuari = usuari;
-        this.linies = new ArrayList<>();
+    public Venda(Usuari usuario) {
+        this.fecha = LocalDateTime.now();
+        this.usuario = usuario;
+        this.lineas = new ArrayList<>();
     }
 
-    public void afegirLinia(Producte producte, int quantitat) {
-        linies.add(new LiniaVenda(producte, quantitat));
+    public void agregarLineaDesdeInput(Producte producto) {
+        System.out.print("Cantidad para " + producto.getNombre() + ": ");
+        int cantidad = InputHelper.readPositiveInteger();
+        if (producto.descontarStock(cantidad)) {
+            lineas.add(new LineaVenta(producto, cantidad));
+            System.out.println("Producto añadido a la venta.");
+        } else {
+            System.out.println("No hay suficiente stock.");
+        }
     }
 
     public double getTotal() {
-        return linies.stream().mapToDouble(LiniaVenda::getSubtotal).sum();
+        return lineas.stream().mapToDouble(LineaVenta::getSubtotal).sum();
     }
 
-    public LocalDateTime getData() {
-        return data;
+    public List<LineaVenta> getLineas() {
+        return lineas;
     }
 
-    public Usuari getUsuari() {
-        return usuari;
-    }
-
-    public List<LiniaVenda> getLinies() {
-        return linies;
+    public Usuari getUsuario() {
+        return usuario;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Data: ").append(data).append("\n");
-        sb.append("Usuari: ").append(usuari != null ? usuari.getNom() : "Anònim").append("\n");
-        for (LiniaVenda linia : linies) {
-            sb.append(linia).append("\n");
+        sb.append("Fecha: ").append(fecha).append("\n");
+        sb.append("Usuario: ").append(usuario != null ? usuario.getNombre() : "Anónimo").append("\n");
+        for (LineaVenta linea : lineas) {
+            sb.append(linea).append("\n");
         }
         sb.append("Total: ").append(getTotal());
         return sb.toString();
