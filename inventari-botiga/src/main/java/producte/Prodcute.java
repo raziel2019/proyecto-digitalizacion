@@ -1,42 +1,47 @@
 package producte;
 
-public class Prodcute {
-	private String nombre;
-	private int precio;
-	private String stock;
-	
-	public Prodcute (String nombre, int precio, String stock) {
-		this.nombre = nombre;
-		this.precio = precio;
-		this.stock = stock;
-	}
+public class Producte {
+    private String nombre;
+    private double precio;
+    private int stock;
 
-	public String getNombre() {
-		return nombre;
-	}
+    public Producte(String nombre, double precio, int stock) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.stock = stock;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public int getPrecio() {
-		return precio;
-	}
+    public double getPrecio() {
+        return precio;
+    }
 
-	public void setPrecio(int precio) {
-		this.precio = precio;
-	}
+    public int getStock() {
+        return stock;
+    }
 
-	public String getStock() {
-		return stock;
-	}
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
 
-	public void setStock(String stock) {
-		this.stock = stock;
-	}
-	
-	public String toString() {
-		return String.format(getNombre(), getPrecio(), getStock());
-	}
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 
+    public boolean descontarStock(int cantidad) {
+        if (cantidad <= stock) {
+            stock -= cantidad;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s – Precio: %.2f €, Stock: %d", nombre, precio, stock);
+    }
 }
+
