@@ -1,41 +1,59 @@
+package usuari;
+
 import java.util.HashMap;
 import java.util.Map;
+import utilitats.InputHelper;
 
 public class GestorUsuaris {
-    private Map<String, Usuaris> usuaris;
+    private Map<String, Usuari> usuarios;
 
     public GestorUsuaris() {
-        usuaris = new HashMap<>();
+        usuarios = new HashMap<>();
     }
 
-    public boolean afegirUsuari(Usuaris usuari) {
-        if (usuaris.containsKey(usuari.getCorreuElectronic())) {
+    public boolean agregarUsuario(Usuari usuario) {
+        if (usuarios.containsKey(usuario.getCorreoElectronico())) {
             return false;
         }
-        usuaris.put(usuari.getCorreuElectronic(), usuari);
+        usuarios.put(usuario.getCorreoElectronico(), usuario);
         return true;
     }
 
-    public Usuaris obtenirUsuari(String correu) {
-        return usuaris.get(correu);
+    public Usuari crearUsuarioDesdeInput() {
+        System.out.println("\n=== Registro de nuevo usuario ===");
+        String nombre = InputHelper.readString();
+        System.out.print("Correo electrónico: ");
+        String correo = InputHelper.readString();
+        System.out.print("Contraseña: ");
+        String contrasena = InputHelper.readString();
+
+        System.out.print("Rol (1 = ADMINISTRADOR, 2 = CLIENTE): ");
+        int rolSeleccionado = InputHelper.readPositiveInteger();
+        Usuari.Rol rol = rolSeleccionado == 1 ? Usuari.Rol.ADMINISTRADOR : Usuari.Rol.CLIENTE;
+
+        return new Usuari(nombre, correo, contrasena, rol);
     }
 
-    public boolean validarCredencials(String correu, String contrasenya) {
-        Usuaris usuari = usuaris.get(correu);
-        if (usuari != null) {
-            return usuari.validarContrasenya(contrasenya);
+    public Usuari obtenerUsuario(String correo) {
+        return usuarios.get(correo);
+    }
+
+    public boolean validarCredenciales(String correo, String contrasena) {
+        Usuari usuario = usuarios.get(correo);
+        if (usuario != null) {
+            return usuario.validarContrasena(contrasena);
         }
         return false;
     }
 
-    public boolean esAdministrador(String correu) {
-        Usuaris usuari = usuaris.get(correu);
-        return usuari != null && usuari.getRol() == Usuaris.Rol.ADMINISTRADOR;
+    public boolean esAdministrador(String correo) {
+        Usuari usuario = usuarios.get(correo);
+        return usuario != null && usuario.getRol() == Usuari.Rol.ADMINISTRADOR;
     }
 
-    public void llistarUsuaris() {
-        for (Usuaris usuari : usuaris.values()) {
-            System.out.println(usuari);
+    public void listarUsuarios() {
+        for (Usuari usuario : usuarios.values()) {
+            System.out.println(usuario);
         }
     }
 }
