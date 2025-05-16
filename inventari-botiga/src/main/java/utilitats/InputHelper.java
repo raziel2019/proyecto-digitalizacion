@@ -63,6 +63,21 @@ public class InputHelper {
 		}
 		return texto;
 	}
+	
+	public static String readEmail() {
+	    String email;
+	    String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+	    while (true) {
+	        System.out.print("Introduce un correo electrónico: ");
+	        email = scanner.nextLine().trim();
+	        if (email.matches(emailRegex)) {
+	            return email;
+	        } else {
+	            System.out.println("Error: el formato del correo no es válido. Ejemplo válido: usuario@dominio.com");
+	        }
+	    }
+	}
+
 		
 	}
 	

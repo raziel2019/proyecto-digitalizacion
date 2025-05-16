@@ -1,34 +1,70 @@
 package botiga;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import producte.GestorProductes;
+import producte.Producte;
+
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class GestorProductesTest {
-    private List<ProducteTest> productes = new ArrayList<>();
 
-    public void afegirProducte(ProducteTest p) {
-        productes.add(p);
+    private GestorProductes gestor;
+
+    @BeforeEach
+    public void setUp() {
+        gestor = new GestorProductes();
+        System.out.println("=== Nuevo GestorProductes creado ===");
     }
 
-    public boolean eliminarProducte(String nom) {
-        return productes.removeIf(p -> p.getNom().equalsIgnoreCase(nom));
+    @Test
+    public void testCatalogoVacioAlInicio() {
+        System.out.println("=== testCatalogoVacioAlInicio ===");
+        boolean vacio = gestor.catalogoVacio();
+        System.out.println("¿Catálogo vacío? " + vacio);
+        assertTrue(vacio);
     }
 
-    public Optional<ProducteTest> cercarProducte(String nom) {
-        return productes.stream()
-                        .filter(p -> p.getNom().equalsIgnoreCase(nom))
-                        .findFirst();
+    @Test
+    public void testAgregarProductoYBuscarlo() {
+        System.out.println("=== testAgregarProductoYBuscarlo ===");
+        Producte p = new Producte("Libro", 15.0, 5);
+        gestor.agregarProducto(p);
+        System.out.println("Producto agregado: " + p);
+
+        Optional<Producte> resultado = gestor.buscarPorNombre("Libro");
+        System.out.println("Resultado de la búsqueda: " + (resultado.isPresent() ? resultado.get() : "No encontrado"));
+
+        assertTrue(resultado.isPresent());
+        assertEquals("Libro", resultado.get().getNombre());
     }
 
-    public void aplicarDescompte(String nom, double percentatge) {
-        cercarProducte(nom).ifPresent(p -> {
-            double nouPreu = p.getPreu() * (1 - percentatge / 100);
-            p.setPreu(nouPreu);
-        });
+    @Test
+    public void testEliminarProductoExistente() {
+        System.out.println("=== testEliminarProductoExistente ===");
+        Producte p = new Producte("Goma", 0.5, 30);
+        gestor.agregarProducto(p);
+        System.out.println("Producto agregado: " + p);
+
+        boolean eliminado = gestor.eliminarProducto("Goma");
+        System.out.println("¿Producto eliminado? " + eliminado);
+
+        boolean sigueExistiendo = gestor.buscarPorNombre("Goma").isPresent();
+        System.out.println("¿Sigue existiendo? " + sigueExistiendo);
+
+        assertTrue(eliminado);
+        assertFalse(sigueExistiendo);
     }
 
-    public void mostrarProductes() {
-        productes.forEach(System.out::println);
+    @Test
+    public void testEliminarProductoInexistente() {
+        System.out.println("=== testEliminarProductoInexistente ===");
+        boolean eliminado = gestor.eliminarProducto("NoExiste");
+        System.out.println("¿Intento de eliminar producto inexistente? " + eliminado);
+        assertFalse(eliminado);
     }
 }

@@ -23,7 +23,7 @@ public class GestorUsuaris {
         System.out.println("\n=== Registro de nuevo usuario ===");
         String nombre = InputHelper.readString();
         System.out.print("Correo electrónico: ");
-        String correo = InputHelper.readString();
+        String correo = InputHelper.readEmail();
         System.out.print("Contraseña: ");
         String contrasena = InputHelper.readString();
 

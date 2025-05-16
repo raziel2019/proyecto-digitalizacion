@@ -1,3 +1,5 @@
+package producte;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +16,10 @@ public class GestorProductes {
         catalogo.add(p);
     }
 
+    public boolean catalogoVacio() {
+        return catalogo.isEmpty();
+    }
+    
     public void agregarProductoDesdeInput() {
         System.out.println("\n=== Agregar nuevo producto ===");
         String nombre = InputHelper.readString();
